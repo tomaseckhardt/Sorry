@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dej mu!</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --accent: #ff4757;
+    --accent-dark: #e0303f;
+    --text: #e8eaf0;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    background: radial-gradient(circle at 50% 30%, #1c2030, #0f1117 70%);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #e8eaf0;
+    overflow: hidden;
+    padding: 24px;
+  }
+
+  /* container is the stable anchor so shaking the image doesn't move the emoji target */
+  .photo-wrap {
+    position: relative;
+  }
+
+  .photo {
+    width: 280px;
+    height: 350px;
+    border-radius: 16px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .photo.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes shake {
+    10%, 90%  { transform: translate(-2px, 1px) rotate(-1deg); }
+    20%, 80%  { transform: translate(4px, -2px) rotate(1.5deg); }
+    30%, 50%, 70% { transform: translate(-8px, 3px) rotate(-2.5deg); }
+    40%, 60%  { transform: translate(8px, -3px) rotate(2.5deg); }
+  }
+
+  .punch-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    min-width: 240px;
+    transition: transform 0.1s ease, background 0.2s ease;
+    box-shadow: 0 6px 0 var(--accent-dark);
+  }
+
+  .punch-btn:hover { background: #ff5e6b; }
+  .punch-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0punch 2px 0 var(--accent-dark);
+  }
+
+  /* flying fist */
+  .fist {
+    position: fixed;
+    font-size: 56px;
+    pointer-events: none;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    will-change: left, top, transform;
+  }
+
+  /* Pozadí, které překryje celou obrazovku */
+.popup {
+    display: none; /* Ve výchozím stavu schováno */
+    position: fixed;
+    z-index: 1000; /* Aby byl popup vždy navrchu */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Poloprůhledné černé pozadí */
+}
+
+/* Samotné bílé okno s obsahem */
+.popup-content {
+    background-color: #1c2030;
+    margin: 1% auto; /* Umístění kousek od horního okraje a vycentrování */
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(28, 32, 48, 0.5);
+}
+
+/* Zavírací křížek */
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    color: #333;
+}
+</style>
+</head>
+<body>
+
+  <div class="photo-wrap">
+    <img class="photo" id="photo"
+         src="Placeholder.jpg"
+         alt="portrait placeholder">
+  </div>
+
+  <button class="punch-btn" id="punchBtn">Dej mu!</button>
+
+  <div id="myPopup" class="popup">
+    <div class="popup-content">
+        <span class="closeBtn">&times;</span>
+        <h2>Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."</h2>
+        <img src="fotkaOK.jpg" alt="fotkaOK" style="width: 100%">
+        <h1>Výborně. Díky moc.</h1>
+    </div>
+  </div>
+
+<script>
+  // ===== Easy to edit: funny button texts =====
+  const PUNCH_TEXTS = [
+    "plesk!",
+    "Nandat mu!",
+    "Zmlať ho!",
+    "Kurvaa do něěj!!",
+    "Za všechno, co si mi provedl!",
+    "Boink",
+    "BUUUUM!!",
+    "Jednu na frňák",
+    "Přímo na spánek!",
+    "Beeeeem!",
+    "Bam!",
+    "Pokud na tohle kliknu, všechno Tomášovi odpouštím."
+  ];
+
+  const btn = document.getElementById('punchBtn');
+  const photo = document.getElementById('photo');
+  let count = (Math.floor(Math.random() * 3));
+
+  let textIndex = 0;
+
+  function nextText() {
+    textIndex = (textIndex + 1) % PUNCH_TEXTS.length;
+    btn.textContent = PUNCH_TEXTS[textIndex];
+  }
+
+  function throwPunch() {
+    let count = (Math.floor(Math.random() * 3));
+    // start point: the button, end point: center of the image
+    const btnRect = btn.getBoundingClientRect();
+    const imgRect = photo.getBoundingClientRect();
+
+    const startX = btnRect.left + btnRect.width / 2;
+    const startY = btnRect.top + btnRect.height / 2;
+    const endX = imgRect.left + imgRect.width / 2;
+    const endY = imgRect.top + imgRect.height / 2;
+
+    const fist = document.createElement('div');
+    fist.className = 'fist';
+    fist.textContent = '👊';
+    fist.style.left = startX + 'px';
+    fist.style.top = startY + 'px';
+    fist.style.transform = 'translate(-50%, -50%) scale(0.6) rotate(0deg)';
+    document.body.appendChild(fist);
+  
+
+
+    // force reflow so the transition applies
+    fist.getBoundingClientRect();
+
+    const FLIGHT_MS = 280;
+    fist.style.transition =
+      `left ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
+      `top ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
+      `transform ${FLIGHT_MS}ms ease-in`;
+
+    fist.style.left = endX + 'px';
+    fist.style.top = endY + 'px';
+    fist.style.transform = 'translate(-50%, -50%) scale(1.6) rotate(-25deg)';
+
+    // impact
+    setTimeout(() => {
+      // shake the image
+      photo.classList.remove('shake');
+      void photo.offsetWidth; // restart animation if mid-shake
+      photo.classList.add('shake');
+
+        if (count == 0) {
+        photo.src = "fot0.jpg";
+      } else if (count ==1) {
+        photo.src = "fot1.jpg";
+      } else if (count == 2) {
+        photo.src = "fot2.jpg";
+      } else if (count == 3) {
+        photo.src = "fot3.jpg";
+      }
+        
+
+
+      // little impact pop then remove the fist
+      fist.style.transition = 'transform 120ms ease-out, opacity 200ms ease-out';
+      fist.style.transform = 'translate(-50%, -50%) scale(2.2) rotate(10deg)';
+      fist.style.opacity = '0';
+      setTimeout(() => fist.remove(), 220);
+      setTimeout(() => {
+        photo.src = "Placeholder.jpg";
+      }, 1000);
+
+      nextText();
+    }, FLIGHT_MS);
+
+  console.log(btn.textContent);
+  if (btn.textContent === "Bam!") {
+    btn.addEventListener('click', () => {
+      openPopup();
+    });
+  } else {
+      btn.removeEventListener('click', () => {
+      openPopup();
+        }
+      )
+    }
+}
+
+  btn.addEventListener('click', throwPunch);
+  photo.addEventListener('animationend', () => photo.classList.remove('shake'));
+
+  // Načtení prvků z HTML do proměnných
+const popup = document.getElementById("myPopup");
+const Btn = document.getElementById("Btn");
+const closeBtn = document.querySelector(".closeBtn");
+
+// Funkce pro otevření popupu
+function openPopup() {
+    popup.style.display = "block";
+}
+
+// Funkce pro zavření popupu
+function closePopup() {
+    popup.style.display = "none";
+}
+
+// Spuštění funkcí při kliknutí na tlačítka
+
+closeBtn.addEventListener("click", closePopup);
+
+// Zavření popupu kliknutím mimo bílé okno (do tmavého pozadí)
+window.addEventListener("click", function(event) {
+    if (event.target === popup) {
+        closePopup();
+    }
+});
+</script>
+</body>
+</html>

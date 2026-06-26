@@ -124,9 +124,34 @@
 .closeBtn:hover {
     color: #333;
 }
+
+.lang-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--card);
+    color: var(--text);
+    border: 2px solid #333;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 1001; /* Ensure it's always above the popup */
+  }
+
+  .lang-btn:hover {
+    background: #252938;
+    border-color: var(--accent);
+  }
+
+
 </style>
 </head>
 <body>
+
+  <button id="langBtn" class="lang-btn">EN</button>
 
   <h1 class="nadpisHry" id="nadpisHry">Bouchni svého Tomáše!</h1>
   <p class="popisHry" id="popisHry">Za to všechno, čím tě ten parchant Tomáš nechal projít.</p>
@@ -149,7 +174,38 @@
   </div>
 
 <script>
-  // Array of texts to cycle through on button click
+  // Slovník s překlady
+const translations = {
+  CZ: {
+    nadpis: "Bouchni svého Tomáše!",
+    popis: "Za to všechno, čím tě ten parchant Tomáš nechal projít.",
+    popupH2: 'Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."',
+    popupH1: "Výborně! Díky moc.",
+    punchTexts: [
+      "plesk!", "Nandat mu!", "Zmlať ho!", "Kurvaa do něěj!!",
+      "Za všechno, co si mi provedl!", "Boink", "BUUUUM!!",
+      "Jednu na frňák", "Přímo na spánek!", "Beeeeem!", "Bam!",
+      "Pokud na tohle kliknu, všechno Tomášovi odpouštím."
+    ]
+  },
+  EN: {
+    nadpis: "Punch your Tomáš!",
+    popis: "For everything that bastard Tomáš put you through.",
+    popupH2: 'You just clicked "If I click this, I forgive Tomáš for everything."',
+    popupH1: "Excellent! Thanks a lot.",
+    punchTexts: [
+      "smack!", "Get him!", "Beat him up!", "Go for it!!",
+      "For everything you did to me!", "Boink", "BOOOM!!",
+      "One in the face", "Right in the temple!", "Beeeeem!", "Bam!",
+      "If I click this, I forgive Tomáš for everything."
+    ]
+  }
+};
+
+// Current language state
+let currentLang = 'CZ';
+
+  /*// Array of texts to cycle through on button click
   const PUNCH_TEXTS = [
     "plesk!",
     "Nandat mu!",
@@ -163,7 +219,7 @@
     "Beeeeem!",
     "Bam!",
     "Pokud na tohle kliknu, všechno Tomášovi odpouštím."
-  ];
+  ];*/
 
   const btn = document.getElementById('punchBtn');
   const photo = document.getElementById('photo');
@@ -240,7 +296,7 @@
       nextText();
     }, FLIGHT_MS);
 
-  console.log(btn.textContent);
+  // open popup if the last text is reached = "Bam!"
   if (btn.textContent === "Bam!") {
     btn.addEventListener('click', () => {
       openPopup();
@@ -280,6 +336,25 @@ window.addEventListener("click", function(event) {
     if (event.target === popup) {
         closePopup();
     }
+});
+
+
+function nextText() {
+  const texts = translations[currentLang].punchTexts;
+  textIndex = (textIndex + 1) % texts.length;
+  btn.textContent = texts[textIndex];
+}
+
+const langBtn = document.getElementById('langBtn');
+langBtn.addEventListener('click', () => {
+  currentLang = currentLang === 'CZ' ? 'EN' : 'CZ';
+  langBtn.textContent = currentLang === 'CZ' ? 'EN' : 'CZ';
+  document.getElementById('nadpisHry').textContent = translations[currentLang].nadpis;
+  document.getElementById('popisHry').textContent = translations[currentLang].popis;
+  document.querySelector('.popup-content h2').textContent = translations[currentLang].popupH2;
+  document.querySelector('.popup-content h1').textContent = translations[currentLang].popupH1;
+  textIndex = -1; // Reset text index to start from the first text in the new language
+  nextText(); // Update button text immediately after language change
 });
 </script>
 </body>

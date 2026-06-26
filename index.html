@@ -87,22 +87,21 @@
     will-change: left, top, transform;
   }
 
-  /* Pozadí, které překryje celou obrazovku */
+  /* background overlay for popup */
 .popup {
-    display: none; /* Ve výchozím stavu schováno */
+    display: none; /* Initially hidden */
     position: fixed;
-    z-index: 1000; /* Aby byl popup vždy navrchu */
+    z-index: 1000; /* Ensure popup is always on top */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Poloprůhledné černé pozadí */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
 }
 
-/* Samotné bílé okno s obsahem */
 .popup-content {
     background-color: #1c2030;
-    margin: 1% auto; /* Umístění kousek od horního okraje a vycentrování */
+    margin: 1% auto; /* Positioning slightly from the top and centering */
     padding: 30px;
     border-radius: 8px;
     width: 80%;
@@ -111,7 +110,7 @@
     box-shadow: 0 4px 20px rgba(28, 32, 48, 0.5);
 }
 
-/* Zavírací křížek */
+/* closing button */
 .closeBtn {
     position: absolute;
     top: 10px;
@@ -150,7 +149,7 @@
   </div>
 
 <script>
-  // ===== Easy to edit: funny button texts =====
+  // Array of texts to cycle through on button click
   const PUNCH_TEXTS = [
     "plesk!",
     "Nandat mu!",
@@ -168,7 +167,7 @@
 
   const btn = document.getElementById('punchBtn');
   const photo = document.getElementById('photo');
-  let count = (Math.floor(Math.random() * 3));
+  
 
   let textIndex = 0;
 
@@ -178,8 +177,7 @@
   }
 
   function throwPunch() {
-    let count = (Math.floor(Math.random() * 3));
-    // start point: the button, end point: center of the image
+    let count = (Math.floor(Math.random() * 4));
     const btnRect = btn.getBoundingClientRect();
     const imgRect = photo.getBoundingClientRect();
 
@@ -258,26 +256,26 @@
   btn.addEventListener('click', throwPunch);
   photo.addEventListener('animationend', () => photo.classList.remove('shake'));
 
-  // Načtení prvků z HTML do proměnných
+  // loading popup
 const popup = document.getElementById("myPopup");
 const Btn = document.getElementById("Btn");
 const closeBtn = document.querySelector(".closeBtn");
 
-// Funkce pro otevření popupu
+// open popup function
 function openPopup() {
     popup.style.display = "block";
 }
 
-// Funkce pro zavření popupu
+// close popup function
 function closePopup() {
     popup.style.display = "none";
 }
 
-// Spuštění funkcí při kliknutí na tlačítka
+// execute functions on button clicks
 
 closeBtn.addEventListener("click", closePopup);
 
-// Zavření popupu kliknutím mimo bílé okno (do tmavého pozadí)
+// close popup by clicking outside the white window (on the dark background)
 window.addEventListener("click", function(event) {
     if (event.target === popup) {
         closePopup();

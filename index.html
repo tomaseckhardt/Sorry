@@ -226,6 +226,26 @@ const translations = {
   }
 };
 const sound = document.getElementById('punchSound0');
+const muteBtn = document.getElementById('muteBtn');
+let isMuted = false;
+muteBtn.addEventListener('click', () => {
+  isMuted = !isMuted;
+  muteBtn.textContent = isMuted ? '🔊' : '🔇';
+});
+
+const originalPlay = HTMLAudioElement.prototype.play;
+HTMLAudioElement.prototype.play = function() {
+  this.muted = isMuted; 
+  return originalPlay.apply(this, arguments); 
+};
+
+function toggleMute() {
+  isMuted = !isMuted;
+  
+  document.querySelectorAll('audio, video').forEach(media => {
+    media.muted = isMuted;
+  });
+}
 
 // Current language state
 let currentLang = 'CZ';

@@ -193,6 +193,7 @@
         <span class="closeBtn">&times;</span>
         <h2>Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."</h2>
         <img src="fotkaOK.jpg" alt="fotkaOK" style="width: 100%">
+        <audio id="celebrationSound" src="celebration.mp3" preload="auto"></audio>
         <h1>Výborně! Díky moc.</h1>
     </div>
   </div>
@@ -364,6 +365,12 @@ const closeBtn = document.querySelector(".closeBtn");
 // open popup function
 function openPopup() {
     popup.style.display = "block";
+    const celebrationSound = document.getElementById('celebrationSound');
+    if (celebrationSound) {
+        celebrationSound.play().catch(err => {
+            console.log("Přehrávání zvuku selhalo nebo bylo zablokováno:", err);
+        });
+    } 
 }
 
 // close popup function

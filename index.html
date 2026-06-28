@@ -75,7 +75,7 @@
   .punch-btn:hover { background: #ff5e6b; }
   .punch-btn:active {
     transform: translateY(4px);
-    box-shadow: 0punch 2px 0 var(--accent-dark);
+    box-shadow: 0 2px 0 var(--accent-dark);
   }
 
   /* flying fist */
@@ -146,13 +146,32 @@
     background: #252938;
     border-color: var(--accent);
   }
+  .mute-btn {
+    position: fixed;
+    top: 20px;
+    right: 100px;
+    background: var(--card);
+    color: var(--text);
+    border: 2px solid #333;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 1001; /* Ensure it's always above the popup */
+  }
 
+  .mute-btn:hover {
+    background: #252938;
+    border-color: var(--accent);
+  }
 
 </style>
 </head>
 <body>
 
-  <button id="langBtn" class="lang-btn">EN</button>
+  <button id="muteBtn" class="mute-btn">🔇</button><button id="langBtn" class="lang-btn">EN</button>
 
   <h1 class="nadpisHry" id="nadpisHry">Bouchni svého Tomáše!</h1>
   <p class="popisHry" id="popisHry">Za to všechno, čím tě ten parchant Tomáš nechal projít.</p>
@@ -161,6 +180,10 @@
     <img class="photo" id="photo"
          src="Placeholder.jpg"
          alt="portrait placeholder">
+    <audio id="punchSound0" src="punch0.mp3" preload="auto"></audio>
+    <audio id="punchSound1" src="punch1.mp3" preload="auto"></audio>
+    <audio id="punchSound2" src="punch2.mp3" preload="auto"></audio>
+    <audio id="punchSound3" src="punch3.mp3" preload="auto"></audio>
   </div>
 
   <button class="punch-btn" id="punchBtn">Dej mu!</button>
@@ -175,7 +198,7 @@
   </div>
 
 <script>
-  // Slovník s překlady
+  // dictionary for translations
 const translations = {
   CZ: {
     nadpis: "Bouchni svého Tomáše!",
@@ -202,6 +225,7 @@ const translations = {
     ]
   }
 };
+const sound = document.getElementById('punchSound0');
 
 // Current language state
 let currentLang = 'CZ';
@@ -227,13 +251,15 @@ let currentLang = 'CZ';
   
 
   let textIndex = 0;
-
-  function nextText() {
-    textIndex = (textIndex + 1) % PUNCH_TEXTS.length;
-    btn.textContent = PUNCH_TEXTS[textIndex];
-  }
-
+ 
   function throwPunch() {
+    // Check if the last text is reached
+    if (textIndex === 11) {
+    openPopup();
+    nextText(); // Reset the button text after opening the popup
+    return;
+    }
+
     let count = (Math.floor(Math.random() * 4));
     const btnRect = btn.getBoundingClientRect();
     const imgRect = photo.getBoundingClientRect();
@@ -268,6 +294,12 @@ let currentLang = 'CZ';
 
     // impact
     setTimeout(() => {
+
+     const soundTemplate = document.getElementById(`punchSound${count}`);
+        if (soundTemplate) {
+            soundTemplate.cloneNode(true).play().catch(() => {});
+        }
+
       // shake the image
       photo.classList.remove('shake');
       void photo.offsetWidth; // restart animation if mid-shake
@@ -275,12 +307,16 @@ let currentLang = 'CZ';
 
         if (count == 0) {
         photo.src = "fot0.jpg";
+        sound.src = "punch0.mp3";
       } else if (count ==1) {
         photo.src = "fot1.jpg";
+        sound.src = "punch1.mp3";
       } else if (count == 2) {
         photo.src = "fot2.jpg";
+        sound.src = "punch2.mp3";
       } else if (count == 3) {
         photo.src = "fot3.jpg";
+        sound.src = "punch3.mp3";
       }
         
 
@@ -296,18 +332,6 @@ let currentLang = 'CZ';
 
       nextText();
     }, FLIGHT_MS);
-
-  // open popup if the last text is reached = "Bam!"
-  if (btn.textContent === "Bam!") {
-    btn.addEventListener('click', () => {
-      openPopup();
-    });
-  } else {
-      btn.removeEventListener('click', () => {
-      openPopup();
-        }
-      )
-    }
 }
 
   btn.addEventListener('click', throwPunch);
@@ -315,7 +339,6 @@ let currentLang = 'CZ';
 
   // loading popup
 const popup = document.getElementById("myPopup");
-const Btn = document.getElementById("Btn");
 const closeBtn = document.querySelector(".closeBtn");
 
 // open popup function

@@ -1,396 +1,465 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sorry ദ്ദി ༎ຶ‿༎ຶ )</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉️</text></svg>">
-<style>
-  :root {   
-    --bg: #0f1117;
-    --card: #1a1d27;
-    --accent: #ff4757;
-    --accent-dark: #e0303f;
-    --text: #e8eaf0;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorry ദ്ദി ༎ຶ‿༎ຶ )</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉️</text></svg>"
+    />
+    <style>
+      :root {
+        --bg: #0f1117;
+        --card: #1a1d27;
+        --accent: #ff4757;
+        --accent-dark: #e0303f;
+        --text: #e8eaf0;
+      }
 
-  * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    background: radial-gradient(circle at 50% 30%, #1c2030, #0f1117 70%);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    color: #e8eaf0;
-    overflow: hidden;
-    padding: 24px;
-  }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        background: radial-gradient(circle at 50% 30%, #1c2030, #0f1117 70%);
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #e8eaf0;
+        overflow: hidden;
+        padding: 24px;
+      }
 
-  /* container is the stable anchor so shaking the image doesn't move the emoji target */
-  .photo-wrap {
-    position: relative;
-  }
+      /* container is the stable anchor so shaking the image doesn't move the emoji target */
+      .photo-wrap {
+        position: relative;
+      }
 
-  .photo {
-    width: 280px;
-    height: 350px;
-    border-radius: 16px;
-    object-fit: cover;
-    display: block;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    user-select: none;
-    -webkit-user-drag: none;
-  }
+      .photo {
+        width: 280px;
+        height: 350px;
+        border-radius: 16px;
+        object-fit: cover;
+        display: block;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        user-select: none;
+        -webkit-user-drag: none;
+      }
 
-  .photo.shake {
-    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-  }
+      .photo.shake {
+        animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      }
 
-  @keyframes shake {
-    10%, 90%  { transform: translate(-2px, 1px) rotate(-1deg); }
-    20%, 80%  { transform: translate(4px, -2px) rotate(1.5deg); }
-    30%, 50%, 70% { transform: translate(-8px, 3px) rotate(-2.5deg); }
-    40%, 60%  { transform: translate(8px, -3px) rotate(2.5deg); }
-  }
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translate(-2px, 1px) rotate(-1deg);
+        }
+        20%,
+        80% {
+          transform: translate(4px, -2px) rotate(1.5deg);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translate(-8px, 3px) rotate(-2.5deg);
+        }
+        40%,
+        60% {
+          transform: translate(8px, -3px) rotate(2.5deg);
+        }
+      }
 
-  .punch-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 16px 32px;
-    font-size: 18px;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    min-width: 240px;
-    transition: transform 0.1s ease, background 0.2s ease;
-    box-shadow: 0 6px 0 var(--accent-dark);
-  }
+      .punch-btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: 16px 32px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 12px;
+        cursor: pointer;
+        min-width: 240px;
+        transition:
+          transform 0.1s ease,
+          background 0.2s ease;
+        box-shadow: 0 6px 0 var(--accent-dark);
+      }
 
-  .punch-btn:hover { background: #ff5e6b; }
-  .punch-btn:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 var(--accent-dark);
-  }
+      .punch-btn:hover {
+        background: #ff5e6b;
+      }
+      .punch-btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 var(--accent-dark);
+      }
 
-  /* flying fist */
-  .fist {
-    position: fixed;
-    font-size: 56px;
-    pointer-events: none;
-    z-index: 100;
-    transform: translate(-50%, -50%);
-    will-change: left, top, transform;
-  }
+      /* flying fist */
+      .fist {
+        position: fixed;
+        font-size: 56px;
+        pointer-events: none;
+        z-index: 100;
+        transform: translate(-50%, -50%);
+        will-change: left, top, transform;
+      }
 
-  /* background overlay for popup */
-.popup {
-    display: none; /* Initially hidden */
-    position: fixed;
-    z-index: 1000; /* Ensure popup is always on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-}
+      /* background overlay for popup */
+      .popup {
+        display: none; /* Initially hidden */
+        position: fixed;
+        z-index: 1000; /* Ensure popup is always on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Semi-transparent black background */
+      }
 
-.popup-content {
-    background-color: #1c2030;
-    margin: 1% auto; /* Positioning slightly from the top and centering */
-    padding: 30px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(28, 32, 48, 0.5);
-}
+      .popup-content {
+        background-color: #1c2030;
+        margin: 1% auto; /* Positioning slightly from the top and centering */
+        padding: 30px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 500px;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(28, 32, 48, 0.5);
+      }
 
-/* closing button */
-.closeBtn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-}
+      /* closing button */
+      .closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+      }
 
-.closeBtn:hover {
-    color: #333;
-}
+      .closeBtn:hover {
+        color: #333;
+      }
 
-.lang-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--card);
-    color: var(--text);
-    border: 2px solid #333;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-    z-index: 1001; /* Ensure it's always above the popup */
-  }
+      .lang-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--card);
+        color: var(--text);
+        border: 2px solid #333;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        z-index: 1001; /* Ensure it's always above the popup */
+      }
 
-  .lang-btn:hover {
-    background: #252938;
-    border-color: var(--accent);
-  }
-  .mute-btn {
-    position: fixed;
-    top: 20px;
-    right: 100px;
-    background: var(--card);
-    color: var(--text);
-    border: 2px solid #333;
-    padding: 10px 10px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-    z-index: 1001; /* Ensure it's always above the popup */
-  }
+      .lang-btn:hover {
+        background: #252938;
+        border-color: var(--accent);
+      }
+      .mute-btn {
+        position: fixed;
+        top: 20px;
+        right: 100px;
+        background: var(--card);
+        color: var(--text);
+        border: 2px solid #333;
+        padding: 10px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        z-index: 1001; /* Ensure it's always above the popup */
+      }
 
-  .mute-btn:hover {
-    background: #252938;
-    border-color: var(--accent);
-  }
+      .mute-btn:hover {
+        background: #252938;
+        border-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <button id="muteBtn" class="mute-btn">🔇</button
+    ><button id="langBtn" class="lang-btn">EN</button>
 
-</style>
-</head>
-<body>
+    <h1 class=" " id="nadpisHry">Bouchni svého Tomáše!</h1>
+    <p class="popisHry" id="popisHry">
+      Za to všechno, čím tě ten parchant Tomáš nechal projít.
+    </p>
 
-  <button id="muteBtn" class="mute-btn">🔇</button><button id="langBtn" class="lang-btn">EN</button>
-
-  <h1 class="nadpisHry" id="nadpisHry">Bouchni svého Tomáše!</h1>
-  <p class="popisHry" id="popisHry">Za to všechno, čím tě ten parchant Tomáš nechal projít.</p>
-
-  <div class="photo-wrap">
-    <img class="photo" id="photo"
-         src="Placeholder.jpg"
-         alt="portrait placeholder">
-    <audio id="punchSound0" src="punch0.mp3" preload="auto"></audio>
-    <audio id="punchSound1" src="punch1.mp3" preload="auto"></audio>
-    <audio id="punchSound2" src="punch2.mp3" preload="auto"></audio>
-    <audio id="punchSound3" src="punch3.mp3" preload="auto"></audio>
-  </div>
-
-  <button class="punch-btn" id="punchBtn">Dej mu!</button>
-
-  <div id="myPopup" class="popup">
-    <div class="popup-content">
-        <span class="closeBtn">&times;</span>
-        <h2>Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."</h2>
-        <img src="fotkaOK.jpg" alt="fotkaOK" style="width: 100%">
-        <audio id="celebrationSound" src="celebration.mp3" preload="auto"></audio>
-        <h1>Výborně! Díky moc.</h1>
+    <div class="photo-wrap">
+      <img
+        class="photo"
+        id="photo"
+        src="Placeholder.jpg"
+        alt="portrait placeholder"
+      />
+      <audio id="punchSound0" src="punch0.mp3" preload="auto"></audio>
+      <audio id="punchSound1" src="punch1.mp3" preload="auto"></audio>
+      <audio id="punchSound2" src="punch2.mp3" preload="auto"></audio>
+      <audio id="punchSound3" src="punch3.mp3" preload="auto"></audio>
     </div>
-  </div>
 
-<script>
-  // dictionary for translations
-const translations = {
-  CZ: {
-    nadpis: "Bouchni svého Tomáše!",
-    popis: "Za to všechno, čím tě ten parchant Tomáš nechal projít.",
-    popupH2: 'Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."',
-    popupH1: "Výborně! Díky moc.",
-    punchTexts: [
-      "plesk!", "Nandat mu!", "Zmlať ho!", "Kurvaa do něěj!!",
-      "Za všechno, co si mi provedl!", "Boink", "BUUUUM!!",
-      "Jednu na frňák", "Přímo na spánek!", "Beeeeem!", "Bam!",
-      "Pokud na tohle kliknu, všechno Tomášovi odpouštím."
-    ]
-  },
-  EN: {
-    nadpis: "Punch Thomas!",
-    popis: "For everything that bastard Thomas put you through.",
-    popupH2: 'You just clicked "If I click this, I forgive Thomas for everything."',
-    popupH1: "Excellent! Thanks a lot.",
-    punchTexts: [
-      "smack!", "Get him!", "Beat him up!", "Go for it!!",
-      "For everything you did to me!", "Boink", "BOOOM!!",
-      "One in the face", "Right in the temple!", "Beeeeem!", "Bam!",
-      "If I click this, I forgive Thomas for everything."
-    ]
-  }
-};
-const sound = document.getElementById('punchSound0');
-const muteBtn = document.getElementById('muteBtn');
-let isMuted = false;
-muteBtn.addEventListener('click', () => {
-  isMuted = !isMuted;
-  muteBtn.textContent = isMuted ? '🔊' : '🔇';
-});
+    <button class="punch-btn" id="punchBtn">Dej mu!</button>
 
-const originalPlay = HTMLAudioElement.prototype.play;
-HTMLAudioElement.prototype.play = function() {
-  this.muted = isMuted; 
-  return originalPlay.apply(this, arguments); 
-};
+    <div id="myPopup" class="popup">
+      <div class="popup-content">
+        <span class="closeBtn">&times;</span>
+        <h2>
+          Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."
+        </h2>
+        <img src="fotkaOK.jpg" alt="fotkaOK" style="width: 100%" />
+        <audio
+          id="celebrationSound"
+          src="celebration.mp3"
+          preload="auto"
+        ></audio>
+        <h1>Výborně! Díky moc.</h1>
+      </div>
+    </div>
 
-function toggleMute() {
-  isMuted = !isMuted;
-  
-  document.querySelectorAll('audio, video').forEach(media => {
-    media.muted = isMuted;
-  });
-}
+    <script>
+      // dictionary for translations
+      const translations = {
+        CZ: {
+          nadpis: "Bouchni svého Tomáše!",
+          popis: "Za to všechno, čím tě ten parchant Tomáš nechal projít.",
+          popupH2:
+            'Právě si odklikl "Pokud na tohle kliknu, všechno Tomášovi odpouštím."',
+          popupH1: "Výborně! Díky moc.",
+          punchTexts: [
+            "plesk!",
+            "Nandat mu!",
+            "Zmlať ho!",
+            "Kurvaa do něěj!!",
+            "Za všechno, co si mi provedl!",
+            "Boink",
+            "BUUUUM!!",
+            "Jednu na frňák",
+            "Přímo na spánek!",
+            "Beeeeem!",
+            "Bam!",
+            "Pokud na tohle kliknu, všechno Tomášovi odpouštím.",
+          ],
+        },
+        EN: {
+          nadpis: "Punch Thomas!",
+          popis: "For everything that bastard Thomas put you through.",
+          popupH2:
+            'You just clicked "If I click this, I forgive Thomas for everything."',
+          popupH1: "Excellent! Thanks a lot.",
+          punchTexts: [
+            "smack!",
+            "Get him!",
+            "Beat him up!",
+            "Go for it!!",
+            "For everything you did to me!",
+            "Boink",
+            "BOOOM!!",
+            "One in the face",
+            "Right in the temple!",
+            "Beeeeem!",
+            "Bam!",
+            "If I click this, I forgive Thomas for everything.",
+          ],
+        },
+      };
+      const sound = document.getElementById("punchSound0");
+      const muteBtn = document.getElementById("muteBtn");
+      let isMuted = false;
+      muteBtn.addEventListener("click", () => {
+        isMuted = !isMuted;
+        muteBtn.textContent = isMuted ? "🔊" : "🔇";
+      });
 
-// Current language state
-let currentLang = 'CZ';
+      const originalPlay = HTMLAudioElement.prototype.play;
+      HTMLAudioElement.prototype.play = function () {
+        this.muted = isMuted;
+        return originalPlay.apply(this, arguments);
+      };
 
-  const btn = document.getElementById('punchBtn');
-  const photo = document.getElementById('photo');
-  
+      function toggleMute() {
+        isMuted = !isMuted;
 
-  let textIndex = 0;
- 
-  function throwPunch() {
-    // Check if the last text is reached
-    if (textIndex === 11) {
-    openPopup();
-    nextText(); // Reset the button text after opening the popup
-    return;
-    }
+        document.querySelectorAll("audio, video").forEach((media) => {
+          media.muted = isMuted;
+        });
+      }
 
-    let count = (Math.floor(Math.random() * 4));
-    const btnRect = btn.getBoundingClientRect();
-    const imgRect = photo.getBoundingClientRect();
+      // Current language state
+      let currentLang = "CZ";
 
-    const startX = btnRect.left + btnRect.width / 2;
-    const startY = btnRect.top + btnRect.height / 2;
-    const endX = imgRect.left + imgRect.width / 2;
-    const endY = imgRect.top + imgRect.height / 2;
+      const btn = document.getElementById("punchBtn");
+      const photo = document.getElementById("photo");
 
-    const fist = document.createElement('div');
-    fist.className = 'fist';
-    fist.textContent = '👊';
-    fist.style.left = startX + 'px';
-    fist.style.top = startY + 'px';
-    fist.style.transform = 'translate(-50%, -50%) scale(0.6) rotate(0deg)';
-    document.body.appendChild(fist);
-  
+      let textIndex = 0;
 
-
-    // force reflow so the transition applies
-    fist.getBoundingClientRect();
-
-    const FLIGHT_MS = 280;
-    fist.style.transition =
-      `left ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
-      `top ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
-      `transform ${FLIGHT_MS}ms ease-in`;
-
-    fist.style.left = endX + 'px';
-    fist.style.top = endY + 'px';
-    fist.style.transform = 'translate(-50%, -50%) scale(1.6) rotate(-25deg)';
-
-    // impact
-    setTimeout(() => {
-
-     const soundTemplate = document.getElementById(`punchSound${count}`);
-        if (soundTemplate) {
-            soundTemplate.cloneNode(true).play().catch(() => {});
+      function throwPunch() {
+        // Check if the last text is reached
+        if (textIndex === 11) {
+          openPopup();
+          nextText(); // Reset the button text after opening the popup
+          return;
         }
 
-      // shake the image
-      photo.classList.remove('shake');
-      void photo.offsetWidth; // restart animation if mid-shake
-      photo.classList.add('shake');
+        let count = Math.floor(Math.random() * 4);
+        const btnRect = btn.getBoundingClientRect();
+        const imgRect = photo.getBoundingClientRect();
 
-        if (count == 0) {
-        photo.src = "fot0.jpg";
-        sound.src = "punch0.mp3";
-      } else if (count ==1) {
-        photo.src = "fot1.jpg";
-        sound.src = "punch1.mp3";
-      } else if (count == 2) {
-        photo.src = "fot2.jpg";
-        sound.src = "punch2.mp3";
-      } else if (count == 3) {
-        photo.src = "fot3.jpg";
-        sound.src = "punch3.mp3";
+        const startX = btnRect.left + btnRect.width / 2;
+        const startY = btnRect.top + btnRect.height / 2;
+        const endX = imgRect.left + imgRect.width / 2;
+        const endY = imgRect.top + imgRect.height / 2;
+
+        const fist = document.createElement("div");
+        fist.className = "fist";
+        fist.textContent = "👊";
+        fist.style.left = startX + "px";
+        fist.style.top = startY + "px";
+        fist.style.transform = "translate(-50%, -50%) scale(0.6) rotate(0deg)";
+        document.body.appendChild(fist);
+
+        // force reflow so the transition applies
+        fist.getBoundingClientRect();
+
+        const FLIGHT_MS = 280;
+        fist.style.transition =
+          `left ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
+          `top ${FLIGHT_MS}ms cubic-bezier(.55,.06,.68,.19), ` +
+          `transform ${FLIGHT_MS}ms ease-in`;
+
+        fist.style.left = endX + "px";
+        fist.style.top = endY + "px";
+        fist.style.transform =
+          "translate(-50%, -50%) scale(1.6) rotate(-25deg)";
+
+        // impact
+        setTimeout(() => {
+          const soundTemplate = document.getElementById(`punchSound${count}`);
+          if (soundTemplate) {
+            soundTemplate
+              .cloneNode(true)
+              .play()
+              .catch(() => {});
+          }
+
+          // shake the image
+          photo.classList.remove("shake");
+          void photo.offsetWidth; // restart animation if mid-shake
+          photo.classList.add("shake");
+
+          if (count == 0) {
+            photo.src = "fot0.jpg";
+            sound.src = "punch0.mp3";
+          } else if (count == 1) {
+            photo.src = "fot1.jpg";
+            sound.src = "punch1.mp3";
+          } else if (count == 2) {
+            photo.src = "fot2.jpg";
+            sound.src = "punch2.mp3";
+          } else if (count == 3) {
+            photo.src = "fot3.jpg";
+            sound.src = "punch3.mp3";
+          }
+
+          // little impact pop then remove the fist
+          fist.style.transition =
+            "transform 120ms ease-out, opacity 200ms ease-out";
+          fist.style.transform =
+            "translate(-50%, -50%) scale(2.2) rotate(10deg)";
+          fist.style.opacity = "0";
+          setTimeout(() => fist.remove(), 220);
+          setTimeout(() => {
+            photo.src = "Placeholder.jpg";
+          }, 1000);
+
+          nextText();
+        }, FLIGHT_MS);
       }
-        
 
+      btn.addEventListener("click", throwPunch);
+      photo.addEventListener("animationend", () =>
+        photo.classList.remove("shake"),
+      );
 
-      // little impact pop then remove the fist
-      fist.style.transition = 'transform 120ms ease-out, opacity 200ms ease-out';
-      fist.style.transform = 'translate(-50%, -50%) scale(2.2) rotate(10deg)';
-      fist.style.opacity = '0';
-      setTimeout(() => fist.remove(), 220);
-      setTimeout(() => {
-        photo.src = "Placeholder.jpg";
-      }, 1000);
+      // loading popup
+      const popup = document.getElementById("myPopup");
+      const closeBtn = document.querySelector(".closeBtn");
 
-      nextText();
-    }, FLIGHT_MS);
-}
-
-  btn.addEventListener('click', throwPunch);
-  photo.addEventListener('animationend', () => photo.classList.remove('shake'));
-
-  // loading popup
-const popup = document.getElementById("myPopup");
-const closeBtn = document.querySelector(".closeBtn");
-
-// open popup function
-function openPopup() {
-    popup.style.display = "block";
-    const celebrationSound = document.getElementById('celebrationSound');
-    if (celebrationSound) {
-        celebrationSound.play().catch(err => {
+      // open popup function
+      function openPopup() {
+        popup.style.display = "block";
+        const celebrationSound = document.getElementById("celebrationSound");
+        if (celebrationSound) {
+          celebrationSound.play().catch((err) => {
             console.log("Přehrávání zvuku selhalo nebo bylo zablokováno:", err);
-        });
-    } 
-}
+          });
+        }
+      }
 
-// close popup function
-function closePopup() {
-    popup.style.display = "none";
-}
+      // close popup function
+      function closePopup() {
+        popup.style.display = "none";
+      }
 
-// execute functions on button clicks
+      // execute functions on button clicks
 
-closeBtn.addEventListener("click", closePopup);
+      closeBtn.addEventListener("click", closePopup);
 
-// close popup by clicking outside the white window (on the dark background)
-window.addEventListener("click", function(event) {
-    if (event.target === popup) {
-        closePopup();
-    }
-});
+      // close popup by clicking outside the white window (on the dark background)
+      window.addEventListener("click", function (event) {
+        if (event.target === popup) {
+          closePopup();
+        }
+      });
 
+      function nextText() {
+        const texts = translations[currentLang].punchTexts;
+        textIndex = (textIndex + 1) % texts.length;
+        btn.textContent = texts[textIndex];
+      }
 
-function nextText() {
-  const texts = translations[currentLang].punchTexts;
-  textIndex = (textIndex + 1) % texts.length;
-  btn.textContent = texts[textIndex];
-}
-
-const langBtn = document.getElementById('langBtn');
-langBtn.addEventListener('click', () => {
-  currentLang = currentLang === 'CZ' ? 'EN' : 'CZ';
-  langBtn.textContent = currentLang === 'CZ' ? 'EN' : 'CZ';
-  document.getElementById('nadpisHry').textContent = translations[currentLang].nadpis;
-  document.getElementById('popisHry').textContent = translations[currentLang].popis;
-  document.querySelector('.popup-content h2').textContent = translations[currentLang].popupH2;
-  document.querySelector('.popup-content h1').textContent = translations[currentLang].popupH1;
-  textIndex = -1; // Reset text index to start from the first text in the new language
-  nextText(); // Update button text immediately after language change
-});
-</script>
-</body>
+      const langBtn = document.getElementById("langBtn");
+      langBtn.addEventListener("click", () => {
+        currentLang = currentLang === "CZ" ? "EN" : "CZ";
+        langBtn.textContent = currentLang === "CZ" ? "EN" : "CZ";
+        document.getElementById("nadpisHry").textContent =
+          translations[currentLang].nadpis;
+        document.getElementById("popisHry").textContent =
+          translations[currentLang].popis;
+        document.querySelector(".popup-content h2").textContent =
+          translations[currentLang].popupH2;
+        document.querySelector(".popup-content h1").textContent =
+          translations[currentLang].popupH1;
+        textIndex = -1; // Reset text index to start from the first text in the new language
+        nextText(); // Update button text immediately after language change
+      });
+    </script>
+  </body>
 </html>

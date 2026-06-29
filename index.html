@@ -295,7 +295,7 @@
       let isMuted = false;
       muteBtn.addEventListener("click", () => {
         isMuted = !isMuted;
-        muteBtn.textContent = isMuted ? "🔊" : "🔇";
+        muteBtn.textContent = isMuted ? "🔇" : "🔊";
       });
 
       const originalPlay = HTMLAudioElement.prototype.play;
